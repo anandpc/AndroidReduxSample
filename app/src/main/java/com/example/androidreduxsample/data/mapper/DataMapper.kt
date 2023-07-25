@@ -1,11 +1,11 @@
 package com.example.androidreduxsample.data.mapper
 
+import com.example.androidreduxsample.data.model.Article
 import com.example.androidreduxsample.data.network.model.response.BaseResponse
-import com.example.androidreduxsample.ui.state.ArticleUiState
 
-fun mapArticleResponseToArticleUiState(response: BaseResponse): List<ArticleUiState> {
+fun mapArticleResponseToArticleUiState(response: BaseResponse): List<Article> {
     return response.articles.map {
-        ArticleUiState(
+        Article(
             id = it.id,
             title = it.title ?: "No title",
             description = it.description ?: "No Description",

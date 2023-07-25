@@ -2,8 +2,9 @@ package com.example.androidreduxsample.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.androidreduxsample.data.MainRepository
-import com.example.androidreduxsample.ui.state.ArticleUiState
+import com.example.androidreduxsample.data.model.Article
+import com.example.androidreduxsample.redux.ArticleListAction
+import com.example.androidreduxsample.redux.Store
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -11,15 +12,26 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel
-class MainViewModel @Inject constructor(private val mainRepository: MainRepository) : ViewModel() {
+class MainViewModel(
+    private val store: Store = Store()
+) : ViewModel() {
 
-    private val _articles = MutableStateFlow(emptyList<ArticleUiState>())
-    val articles: StateFlow<List<ArticleUiState>> = _articles.asStateFlow()
+    private val _articles = MutableStateFlow(emptyList<Article>())
+    val articles: StateFlow<List<Article>> = _articles.asStateFlow()
 
-    fun fetchData() {
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
+
+    init {
         viewModelScope.launch {
-            _articles.value = mainRepository.getArticles()
+            store.appStateFlow.collect {
+                _articles.value = it.mainScreenState.articles
+                _isLoading.value = it.mainScreenState.isLoading
+            }
         }
+    }
+
+    fun fetchData2() {
+        store.dispatch(action = ArticleListAction.Fetch)
     }
 }

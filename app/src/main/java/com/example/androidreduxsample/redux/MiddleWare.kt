@@ -1,13 +1,15 @@
 package com.example.androidreduxsample.redux
 
 import com.example.androidreduxsample.data.MainRepository
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class MiddleWare @Inject constructor(private val mainRepository: MainRepository) {
+class MiddleWare @Inject constructor(
+    private val mainRepository: MainRepository
+) {
 
-    suspend fun handle(action: Action): Action = withContext(Dispatchers.IO) {
+    suspend fun handle(action: Action): Action = withContext(IO) {
         if (action is ArticleListAction.Fetch) {
             val articles = mainRepository.getArticles()
             if (articles.isEmpty().not()) {
@@ -16,6 +18,7 @@ class MiddleWare @Inject constructor(private val mainRepository: MainRepository)
                 )
             }
         }
+
         return@withContext ArticleListAction.Loading
     }
 }

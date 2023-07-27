@@ -1,7 +1,10 @@
 package com.example.androidreduxsample.redux
 
 class Reducer {
-    fun reduce(oldState: AppState, action: Action): AppState {
+    fun reduce(
+        oldState: AppState,
+        action: Action
+    ): AppState {
         return when (action) {
             is ArticleListAction.Loading -> {
                 AppState(

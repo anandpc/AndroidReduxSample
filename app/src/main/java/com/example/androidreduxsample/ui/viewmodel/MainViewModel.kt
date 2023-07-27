@@ -12,8 +12,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class MainViewModel(
-    private val store: Store = Store()
+@HiltViewModel
+class MainViewModel @Inject constructor(
+    private val store: Store
 ) : ViewModel() {
 
     private val _articles = MutableStateFlow(emptyList<Article>())
@@ -31,7 +32,6 @@ class MainViewModel(
         }
     }
 
-    fun fetchData2() {
-        store.dispatch(action = ArticleListAction.Fetch)
-    }
+    suspend fun fetchArticles() = store.dispatch(action = ArticleListAction.Fetch)
+
 }

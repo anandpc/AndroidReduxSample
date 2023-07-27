@@ -49,4 +49,5 @@ object NetworkModule {
     @Singleton
     @Provides
     fun providesRepository(apiService: ArticlesApi) = MainRepository(apiService)
+
 }

@@ -1,7 +1,6 @@
 package com.example.androidreduxsample.ui.screen
 
 import android.util.Log
-import android.widget.ProgressBar
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -39,7 +38,7 @@ fun MainScreen(mainViewModel: MainViewModel = viewModel()) {
 
     // Fetch data when the composable is first displayed
     LaunchedEffect(Unit) {
-        mainViewModel.fetchData2()
+        mainViewModel.fetchArticles()
     }
 
     MainScreenLoading(isLoading)
@@ -49,9 +48,7 @@ fun MainScreen(mainViewModel: MainViewModel = viewModel()) {
 @Composable
 fun MainScreenLoading(isLoading: Boolean) {
     if(isLoading) {
-
-        CircularProgressIndicator(
-        )
+        CircularProgressIndicator()
     }
 }
 

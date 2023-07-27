@@ -3,10 +3,11 @@ package com.example.androidreduxsample.redux
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import javax.inject.Inject
 
-class Store(
-    private val reducer: Reducer = Reducer(),
-    private val sideEffect: SideEffect = SideEffect()
+class Store @Inject constructor(
+    private val reducer: Reducer,
+    private val reduxSideEffect: ReduxSideEffect
 ) {
 
     private val _appStateFlow = MutableStateFlow(
@@ -20,10 +21,9 @@ class Store(
 
     val appStateFlow: StateFlow<AppState> = _appStateFlow.asStateFlow()
 
-    fun dispatch(action: Action) {
-        val newAction = sideEffect.effect(action)
+    suspend fun dispatch(action: Action) {
+        val newAction = reduxSideEffect.effect(action)
         val newState = reducer.reduce(_appStateFlow.value, newAction)
         _appStateFlow.value = newState
     }
 }
-

@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 class Store @Inject constructor(
     private val reducer: Reducer,
-    private val reduxSideEffect: ReduxSideEffect
+    private val middleWare: MiddleWare
 ) {
 
     private val _appStateFlow = MutableStateFlow(
@@ -22,7 +22,7 @@ class Store @Inject constructor(
     val appStateFlow: StateFlow<AppState> = _appStateFlow.asStateFlow()
 
     suspend fun dispatch(action: Action) {
-        val newAction = reduxSideEffect.effect(action)
+        val newAction = middleWare.handle(action)
         val newState = reducer.reduce(_appStateFlow.value, newAction)
         _appStateFlow.value = newState
     }

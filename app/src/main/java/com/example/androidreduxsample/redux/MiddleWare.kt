@@ -1,19 +1,21 @@
 package com.example.androidreduxsample.redux
 
 import com.example.androidreduxsample.data.MainRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class ReduxSideEffect @Inject constructor(private val mainRepository: MainRepository) {
+class MiddleWare @Inject constructor(private val mainRepository: MainRepository) {
 
-    suspend fun effect(action: Action): Action {
+    suspend fun handle(action: Action): Action = withContext(Dispatchers.IO) {
         if (action is ArticleListAction.Fetch) {
             val articles = mainRepository.getArticles()
             if (articles.isEmpty().not()) {
-                return ArticleListAction.Loaded(
+                return@withContext ArticleListAction.Loaded(
                     articles = articles
                 )
             }
         }
-        return ArticleListAction.Loading
+        return@withContext ArticleListAction.Loading
     }
 }

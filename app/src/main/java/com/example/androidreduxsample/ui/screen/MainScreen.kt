@@ -15,7 +15,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
@@ -26,6 +25,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberImagePainter
 import com.example.androidreduxsample.data.model.Article
+import com.example.androidreduxsample.redux.ArticleListAction
 import com.example.androidreduxsample.ui.viewmodel.MainViewModel
 
 private const val TAG = "MainScreen"
@@ -33,16 +33,19 @@ private const val TAG = "MainScreen"
 @Composable
 fun MainScreen(mainViewModel: MainViewModel = viewModel()) {
 
-    val articles by mainViewModel.articles.collectAsState()
-    val isLoading by mainViewModel.isLoading.collectAsState()
+    val store = mainViewModel.store
+    val appState = store.appStateFlow.collectAsState()
+
+/*    val articles by mainViewModel.articles.collectAsState()
+    val isLoading by mainViewModel.isLoading.collectAsState()*/
 
     // Fetch data when the composable is first displayed
     LaunchedEffect(Unit) {
-        mainViewModel.fetchArticles()
+        store.dispatch(ArticleListAction.Fetch)
     }
 
-    MainScreenLoading(isLoading)
-    ArticleList(articles = articles)
+    MainScreenLoading(appState.value.mainScreenState.isLoading)
+    ArticleList(appState.value.mainScreenState.articles)
 }
 
 @Composable

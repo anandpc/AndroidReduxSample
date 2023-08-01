@@ -7,5 +7,7 @@ interface Action
 sealed class ArticleListAction : Action {
     object Fetch : Action
     object Loading : Action
+
+    data class Failed(val error: String?): Action
     data class Loaded(val articles: List<Article>) : Action
 }

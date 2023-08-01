@@ -46,11 +46,19 @@ fun MainScreen(mainViewModel: MainViewModel = viewModel()) {
 
     MainScreenLoading(appState.value.mainScreenState.isLoading)
     ArticleList(appState.value.mainScreenState.articles)
+    MainScreenError(appState.value.mainScreenState.error)
+}
+
+@Composable
+fun MainScreenError(error: String?) {
+    if (error != null) {
+        Text(text = "Error :$error")
+    }
 }
 
 @Composable
 fun MainScreenLoading(isLoading: Boolean) {
-    if(isLoading) {
+    if (isLoading) {
         CircularProgressIndicator()
     }
 }

@@ -10,5 +10,6 @@ data class AppState(
 
 data class MainScreenState(
     val articles: List<Article>,
-    val isLoading: Boolean
+    val isLoading: Boolean,
+    val error: String?
 ) : State

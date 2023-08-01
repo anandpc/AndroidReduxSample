@@ -3,19 +3,19 @@ package com.example.androidreduxsample.redux
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 class Store @Inject constructor(
     private val reducer: Reducer,
-    private val middleWare: MiddleWare
+    private val middleware: Middleware
 ) {
 
     private val _appStateFlow = MutableStateFlow(
         AppState(
             mainScreenState = MainScreenState(
                 articles = emptyList(),
-                isLoading = false
+                isLoading = false,
+                error = null
             )
         )
     )
@@ -23,11 +23,12 @@ class Store @Inject constructor(
     val appStateFlow: StateFlow<AppState> = _appStateFlow.asStateFlow()
 
     suspend fun dispatch(action: Action) {
-        middleWare.handle(action)
+        middleware.handle(action)
             .collect { newAction ->
+                // update app state
                 val newState = reducer.reduce(_appStateFlow.value, newAction)
-
+                // notify app state observers for value change
                 _appStateFlow.value = newState
-        }
+            }
     }
 }

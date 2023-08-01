@@ -1,5 +1,8 @@
 package com.example.androidreduxsample.redux
 
+/**
+ * Reducer takes old state and action and emits new state if needed.
+ */
 class Reducer {
     fun reduce(
         oldState: AppState,
@@ -20,6 +23,16 @@ class Reducer {
                     mainScreenState = oldState.mainScreenState.copy(
                         articles = action.articles,
                         isLoading = false
+                    )
+                )
+            }
+
+            is ArticleListAction.Failed -> {
+                AppState(
+                    mainScreenState = oldState.mainScreenState.copy(
+                        articles = emptyList(),
+                        isLoading = false,
+                        error = action.error
                     )
                 )
             }

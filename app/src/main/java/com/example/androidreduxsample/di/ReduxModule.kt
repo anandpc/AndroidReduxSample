@@ -2,7 +2,7 @@ package com.example.androidreduxsample.di
 
 import com.example.androidreduxsample.data.MainRepository
 import com.example.androidreduxsample.redux.Reducer
-import com.example.androidreduxsample.redux.MiddleWare
+import com.example.androidreduxsample.redux.Middleware
 import com.example.androidreduxsample.redux.Store
 import dagger.Module
 import dagger.Provides
@@ -21,15 +21,15 @@ object ReduxModule {
 
     @Singleton
     @Provides
-    fun providesMiddleWare(repository: MainRepository) = MiddleWare(repository)
+    fun providesMiddleWare(repository: MainRepository) = Middleware(repository)
 
     @Singleton
     @Provides
     fun providesStore(
         reducer: Reducer,
-        middleWare: MiddleWare
+        middleWare: Middleware
     ) = Store(
         reducer = reducer,
-        middleWare = middleWare
+        middleware = middleWare
     )
 }

@@ -8,6 +8,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.Dispatchers
 import javax.inject.Singleton
 
 
@@ -21,15 +22,20 @@ object ReduxModule {
 
     @Singleton
     @Provides
-    fun providesMiddleWare(repository: MainRepository) = Middleware(repository)
+    fun providesMiddleWare(
+        repository: MainRepository,
+        dispatchers: Dispatchers
+    ) = Middleware(repository, dispatchers)
 
     @Singleton
     @Provides
     fun providesStore(
         reducer: Reducer,
-        middleWare: Middleware
+        middleWare: Middleware,
+        dispatchers: Dispatchers
     ) = Store(
         reducer = reducer,
-        middleware = middleWare
+        middleware = middleWare,
+        dispatchers = dispatchers
     )
 }

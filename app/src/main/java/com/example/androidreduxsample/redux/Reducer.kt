@@ -4,6 +4,13 @@ package com.example.androidreduxsample.redux
  * Reducer takes old state and action and emits new state if needed.
  */
 class Reducer {
+
+    /**
+     * Reduces old state and action to new state.
+     * @param oldState old state to reduce [AppState]
+     * @param action action to reduce [Action]
+     * @return new state if needed [AppState]
+     */
     fun reduce(
         oldState: AppState,
         action: Action
